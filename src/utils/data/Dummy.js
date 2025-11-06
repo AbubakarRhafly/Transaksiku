@@ -1,29 +1,53 @@
+// Data user dummy
 export const dummyUser = {
-    email: "user@transaksiku.test",
+    email: "user@transaksiku.com",
     password: "123456",
-    name: "Abubakar Rhafly Eka Putera",
-    accountNumber: "1234567890",
+    name: "Abubakar Rhalfy Eka Putera",
+    accountNumber: "1234567890", // boleh ganti sesuai kebutuhan
+    saldo: 2500000, // saldo awal
 };
 
-export const dummyAccounts = [
-    { accountNumber: "1234567890", label: "Rekening Utama - Abubakar Rhafly Eka Putera" },
-    { accountNumber: "9876543210", label: "Tabungan Anak" },
-    { accountNumber: "5556667777", label: "Rekening Bisnis" },
+// Data transaksi dummy, pakai nama "transaksilist" seperti di soal
+export const transaksilist = [
+    {
+        id: "TRX001",
+        tanggal: "2025-04-20",
+        tujuan: "Budi Santoso",
+        nominal: 500000,
+        catatan: "Bayar utang",
+        status: "Berhasil",
+    },
+    {
+        id: "TRX002",
+        tanggal: "2025-04-18",
+        tujuan: "Siti Aminah",
+        nominal: 250000,
+        catatan: "Transfer pulsa",
+        status: "Berhasil",
+    },
+    {
+        id: "TRX003",
+        tanggal: "2025-04-15",
+        tujuan: "Ahmad Fauzi",
+        nominal: 1000000,
+        catatan: "Biaya kuliah",
+        status: "Berhasil",
+    },
 ];
 
-export const dummyTransactions = [
-    {
-        id: 1,
-        date: "01/11/2025 09.15",
-        accountNumber: "9876543210",
-        amount: 150000,
-        message: "Uang saku bulan November",
-    },
-    {
-        id: 2,
-        date: "03/11/2025 14.30",
-        accountNumber: "5556667777",
-        amount: 750000,
-        message: "Pembayaran tagihan",
-    },
+// Opsional: daftar tujuan untuk dropdown rekening tujuan
+export const dummyAccounts = [
+    { accountNumber: "9876543210", label: "Budi Santoso" },
+    { accountNumber: "081234567890", label: "Siti Aminah" },
+    { accountNumber: "5556667777", label: "Ahmad Fauzi" },
 ];
+
+// Supaya komponen lain tetap jalan, turunkan ke bentuk yang mereka pakai
+export const dummyTransactions = transaksilist.map((trx) => ({
+    id: trx.id,
+    date: trx.tanggal,
+    accountNumber: trx.tujuan, // di UI akan muncul "Ke: Budi Santoso" dll
+    amount: trx.nominal,
+    message: trx.catatan,
+    status: trx.status,
+}));

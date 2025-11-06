@@ -19,6 +19,16 @@ export default function TransferPage({ currentUser }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
+    // saldo yang dimiliki user
+    const [balance, setBalance] = useState(
+        currentUser?.saldo ?? currentUser?.balance ?? 0
+    );
+
+    // kalau suatu saat currentUser berubah, sinkronkan lagi
+    useEffect(() => {
+        setBalance(currentUser?.saldo ?? currentUser?.balance ?? 0);
+    }, [currentUser]);
+
     useEffect(() => {
         setIsInitialLoading(true);
         const t = setTimeout(() => {
@@ -43,6 +53,12 @@ export default function TransferPage({ currentUser }) {
             return;
         }
 
+        // CEK SALDO
+        if (amountNumber > balance) {
+            showError("Saldo tidak mencukupi untuk melakukan transfer ini.");
+            return;
+        }
+
         setIsSubmitting(true);
         setTimeout(() => {
             const newTx = {
@@ -55,6 +71,10 @@ export default function TransferPage({ currentUser }) {
                 amount: amountNumber,
                 message: formData.message?.trim() || "",
             };
+
+            // kurangi saldo
+            setBalance((prev) => prev - amountNumber);
+
             setTransactions((prev) => [newTx, ...prev]);
             setFormData({ accountNumber: "", amount: "", message: "" });
             setIsSubmitting(false);
@@ -81,6 +101,7 @@ export default function TransferPage({ currentUser }) {
                     onSubmit={handleSubmitTransfer}
                     isSubmitting={isSubmitting}
                     currentUser={currentUser}
+                    balance={balance}   // >> kirim saldo ke form
                 />
                 {isSubmitting && (
                     <div className="loading-overlay">

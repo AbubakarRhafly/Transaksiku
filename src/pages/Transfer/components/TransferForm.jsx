@@ -1,6 +1,16 @@
 import Input from "../../../components/Input.jsx";
 import Button from "../../../components/Button.jsx";
 
+// fungsi kecil untuk format rupiah
+function formatCurrency(amount) {
+    if (amount == null || Number.isNaN(Number(amount))) return "-";
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0,
+    }).format(amount);
+}
+
 export default function TransferForm({
     accounts,
     formData,
@@ -8,6 +18,7 @@ export default function TransferForm({
     onSubmit,
     isSubmitting,
     currentUser,
+    balance,      // << TERIMA SALDO
 }) {
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,6 +35,15 @@ export default function TransferForm({
                     <div>
                         <div className="account-name">{currentUser?.name}</div>
                         <div className="account-number">{currentUser?.accountNumber}</div>
+                        <div
+                            style={{
+                                fontSize: "0.8rem",
+                                marginTop: "0.2rem",
+                                color: "#cbd5f5",
+                            }}
+                        >
+                            Saldo: {formatCurrency(balance)}
+                        </div>
                     </div>
                 </div>
             </div>
