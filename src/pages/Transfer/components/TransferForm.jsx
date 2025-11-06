@@ -25,12 +25,13 @@ export default function TransferForm({
     };
 
     return (
-        <form className="space-y-3" onSubmit={handleSubmit}>
-            <div className="space-y-1">
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Rekening sumber */}
+            <div className="space-y-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                     Rekening sumber
                 </p>
-                <div className="inline-flex min-w-[260px] items-center rounded-full bg-gradient-to-r from-blue-500 to-blue-800 px-4 py-3 text-slate-50 shadow-lg">
+                <div className="inline-flex min-w-[260px] items-center rounded-2xl bg-gradient-to-r from-blue-500 to-blue-800 px-4 py-3 text-slate-50 shadow-lg">
                     <div>
                         <div className="text-sm font-semibold">
                             {currentUser?.name}
@@ -45,6 +46,7 @@ export default function TransferForm({
                 </div>
             </div>
 
+            {/* Input utama */}
             <div className="grid gap-3 md:grid-cols-2">
                 <label className="flex flex-col gap-1 text-sm text-slate-800">
                     Nomor Rekening Tujuan

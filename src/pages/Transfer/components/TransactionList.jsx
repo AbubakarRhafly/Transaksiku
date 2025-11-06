@@ -9,12 +9,11 @@ export default function TransactionList({
 }) {
     const handleClear = () => {
         if (!transactions.length || isLoading) return;
-        // pakai Swal konfirmasi lagi
         confirmClearTransactions(onClearAll);
     };
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
                 <span className="text-xs text-slate-500">
                     {isLoading

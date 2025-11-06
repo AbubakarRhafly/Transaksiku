@@ -81,8 +81,8 @@ export default function TransferPage({ currentUser }) {
     };
 
     return (
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.25fr)]">
-            <Card className="relative flex flex-col gap-3">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.25fr)]">
+            <Card className="relative flex flex-col gap-4 bg-white">
                 <Heading
                     title="Form Transfer"
                     subtitle="Lakukan transfer ke rekening tujuan (minimal Rp 1.000)."
@@ -98,7 +98,7 @@ export default function TransferPage({ currentUser }) {
                 />
 
                 {isSubmitting && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-slate-900/30">
+                    <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-slate-900/25">
                         <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-4 py-3 text-sm text-slate-50 shadow-xl">
                             <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-500 border-t-blue-400" />
                             <span>Memproses transfer, mohon tunggu...</span>
@@ -107,7 +107,7 @@ export default function TransferPage({ currentUser }) {
                 )}
             </Card>
 
-            <Card>
+            <Card className="bg-white/95">
                 <Heading
                     title="Riwayat Transaksi"
                     subtitle="Transaksi yang berhasil akan tampil secara dinamis."
