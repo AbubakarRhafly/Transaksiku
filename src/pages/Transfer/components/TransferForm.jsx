@@ -1,7 +1,6 @@
 import Input from "../../../components/Input.jsx";
 import Button from "../../../components/Button.jsx";
 
-// fungsi kecil untuk format rupiah
 function formatCurrency(amount) {
     if (amount == null || Number.isNaN(Number(amount))) return "-";
     return new Intl.NumberFormat("id-ID", {
@@ -18,7 +17,7 @@ export default function TransferForm({
     onSubmit,
     isSubmitting,
     currentUser,
-    balance,      // << TERIMA SALDO
+    balance,
 }) {
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -26,33 +25,31 @@ export default function TransferForm({
     };
 
     return (
-        <form className="transfer-form" onSubmit={handleSubmit}>
-            <div className="account-summary">
-                <p className="section-subtitle" style={{ marginBottom: "0.35rem" }}>
+        <form className="space-y-3" onSubmit={handleSubmit}>
+            <div className="space-y-1">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
                     Rekening sumber
                 </p>
-                <div className="account-summary-box">
+                <div className="inline-flex min-w-[260px] items-center rounded-full bg-gradient-to-r from-blue-500 to-blue-800 px-4 py-3 text-slate-50 shadow-lg">
                     <div>
-                        <div className="account-name">{currentUser?.name}</div>
-                        <div className="account-number">{currentUser?.accountNumber}</div>
-                        <div
-                            style={{
-                                fontSize: "0.8rem",
-                                marginTop: "0.2rem",
-                                color: "#cbd5f5",
-                            }}
-                        >
+                        <div className="text-sm font-semibold">
+                            {currentUser?.name}
+                        </div>
+                        <div className="text-[11px] text-blue-100">
+                            {currentUser?.accountNumber}
+                        </div>
+                        <div className="mt-1 text-[11px] text-blue-100">
                             Saldo: {formatCurrency(balance)}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="transfer-form-grid">
-                <label className="form-label">
+            <div className="grid gap-3 md:grid-cols-2">
+                <label className="flex flex-col gap-1 text-sm text-slate-800">
                     Nomor Rekening Tujuan
                     <select
-                        className="form-select"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 shadow-inner focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200"
                         value={formData.accountNumber}
                         onChange={(e) => onChange("accountNumber", e.target.value)}
                     >
@@ -81,10 +78,9 @@ export default function TransferForm({
                 placeholder="Contoh: Uang saku, bayar tagihan, dll."
                 value={formData.message}
                 onChange={(e) => onChange("message", e.target.value)}
-                style={{ marginTop: "0.75rem" }}
             />
 
-            <div style={{ marginTop: "1rem", textAlign: "right" }}>
+            <div className="mt-2 flex justify-end">
                 <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? "Mengirim..." : "Transfer Sekarang"}
                 </Button>

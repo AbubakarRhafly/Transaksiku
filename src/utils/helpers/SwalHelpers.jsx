@@ -18,14 +18,18 @@ export const confirmLogout = (onConfirm) => {
 export const confirmClearTransactions = (onConfirm) => {
     Swal.fire({
         title: "Hapus semua transaksi?",
-        text: "Data yang sudah dihapus tidak dapat dikembalikan.",
+        text: "Tindakan ini tidak dapat dibatalkan.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Ya, hapus",
         cancelButtonText: "Batal",
-    }).then((res) => {
-        if (res.isConfirmed && typeof onConfirm === "function") {
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6b7280",
+    }).then((result) => {
+        if (result.isConfirmed) {
             onConfirm();
         }
     });
 };
+
+

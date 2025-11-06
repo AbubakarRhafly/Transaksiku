@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Heading from "../../components/Heading.jsx";
 import Card from "../../components/Card.jsx";
+import Heading from "../../components/Heading.jsx";
 import {
     dummyAccounts,
     dummyTransactions,
@@ -18,13 +18,10 @@ export default function TransferPage({ currentUser }) {
     const [transactions, setTransactions] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
-
-    // saldo yang dimiliki user
     const [balance, setBalance] = useState(
         currentUser?.saldo ?? currentUser?.balance ?? 0
     );
 
-    // kalau suatu saat currentUser berubah, sinkronkan lagi
     useEffect(() => {
         setBalance(currentUser?.saldo ?? currentUser?.balance ?? 0);
     }, [currentUser]);
@@ -52,8 +49,6 @@ export default function TransferPage({ currentUser }) {
             showError("Nominal minimal adalah Rp 1.000.");
             return;
         }
-
-        // CEK SALDO
         if (amountNumber > balance) {
             showError("Saldo tidak mencukupi untuk melakukan transfer ini.");
             return;
@@ -72,9 +67,7 @@ export default function TransferPage({ currentUser }) {
                 message: formData.message?.trim() || "",
             };
 
-            // kurangi saldo
             setBalance((prev) => prev - amountNumber);
-
             setTransactions((prev) => [newTx, ...prev]);
             setFormData({ accountNumber: "", amount: "", message: "" });
             setIsSubmitting(false);
@@ -88,8 +81,8 @@ export default function TransferPage({ currentUser }) {
     };
 
     return (
-        <div className="transfer-page">
-            <Card className="transfer-left">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.25fr)]">
+            <Card className="relative flex flex-col gap-3">
                 <Heading
                     title="Form Transfer"
                     subtitle="Lakukan transfer ke rekening tujuan (minimal Rp 1.000)."
@@ -101,19 +94,20 @@ export default function TransferPage({ currentUser }) {
                     onSubmit={handleSubmitTransfer}
                     isSubmitting={isSubmitting}
                     currentUser={currentUser}
-                    balance={balance}   // >> kirim saldo ke form
+                    balance={balance}
                 />
+
                 {isSubmitting && (
-                    <div className="loading-overlay">
-                        <div className="loading-modal">
-                            <div className="loading-spinner" />
-                            <p>Memproses transfer, mohon tunggu...</p>
+                    <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-slate-900/30">
+                        <div className="flex items-center gap-3 rounded-2xl bg-slate-900 px-4 py-3 text-sm text-slate-50 shadow-xl">
+                            <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-500 border-t-blue-400" />
+                            <span>Memproses transfer, mohon tunggu...</span>
                         </div>
                     </div>
                 )}
             </Card>
 
-            <Card className="transfer-right">
+            <Card>
                 <Heading
                     title="Riwayat Transaksi"
                     subtitle="Transaksi yang berhasil akan tampil secara dinamis."

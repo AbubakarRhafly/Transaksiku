@@ -24,7 +24,6 @@ export default function Login({ onLoginSuccess }) {
         }
 
         setIsSubmitting(true);
-
         setTimeout(() => {
             if (
                 form.email.trim() === dummyUser.email &&
@@ -36,24 +35,24 @@ export default function Login({ onLoginSuccess }) {
                 showError("Email atau password salah.");
             }
             setIsSubmitting(false);
-        }, 800);
+        }, 700);
     };
 
     return (
-        <div className="login-page">
-            <Card className="login-card">
+        <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4 py-8">
+            <Card className="w-full max-w-md">
                 <Heading
                     title="Transaksiku"
                     subtitle="Silakan login untuk mengakses halaman transfer."
                     align="center"
                 />
 
-                <form className="login-form" onSubmit={handleSubmit}>
+                <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
                     <Input
                         label="Email"
                         type="email"
                         name="email"
-                        placeholder="user@transaksiku.test"
+                        placeholder={dummyUser.email}
                         value={form.email}
                         onChange={handleChange}
                     />
@@ -66,18 +65,14 @@ export default function Login({ onLoginSuccess }) {
                         onChange={handleChange}
                     />
 
-                    <Button
-                        className="login-button"
-                        type="submit"
-                        disabled={isSubmitting}
-                    >
+                    <Button className="mt-2 w-full" type="submit" disabled={isSubmitting}>
                         {isSubmitting ? "Memproses..." : "Login"}
                     </Button>
                 </form>
 
-                <div className="login-hint">
+                <div className="mt-4 text-xs text-slate-500">
                     <p>Gunakan akun dummy:</p>
-                    <code>
+                    <code className="mt-1 inline-block rounded-full bg-slate-100 px-2 py-1 text-[11px] text-slate-700">
                         Email: {dummyUser.email} | Password: {dummyUser.password}
                     </code>
                 </div>
