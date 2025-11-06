@@ -3,11 +3,10 @@ export const dummyUser = {
     email: "user@transaksiku.com",
     password: "123456",
     name: "Abubakar Rhalfy Eka Putera",
-    accountNumber: "1234567890", // boleh ganti sesuai kebutuhan
-    saldo: 2500000, // saldo awal
+    accountNumber: "1234567890",
+    saldo: 2500000,
 };
 
-// Data transaksi dummy, pakai nama "transaksilist" seperti di soal
 export const transaksilist = [
     {
         id: "TRX001",
@@ -35,7 +34,7 @@ export const transaksilist = [
     },
 ];
 
-// Opsional: daftar tujuan untuk dropdown rekening tujuan
+// daftar tujuan untuk dropdown rekening tujuan
 export const dummyAccounts = [
     { accountNumber: "9876543210", label: "Budi Santoso" },
     { accountNumber: "081234567890", label: "Siti Aminah" },
@@ -46,7 +45,7 @@ export const dummyAccounts = [
 export const dummyTransactions = transaksilist.map((trx) => ({
     id: trx.id,
     date: trx.tanggal,
-    accountNumber: trx.tujuan, // di UI akan muncul "Ke: Budi Santoso" dll
+    accountNumber: trx.tujuan,
     amount: trx.nominal,
     message: trx.catatan,
     status: trx.status,
