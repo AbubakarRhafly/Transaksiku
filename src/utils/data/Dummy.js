@@ -1,4 +1,3 @@
-// Data user dummy
 export const dummyUser = {
     email: "user@transaksiku.com",
     password: "123456",
@@ -34,14 +33,13 @@ export const transaksilist = [
     },
 ];
 
-// daftar tujuan untuk dropdown rekening tujuan
+// daftar tujuan dropdown
 export const dummyAccounts = [
     { accountNumber: "9876543210", label: "Budi Santoso" },
     { accountNumber: "081234567890", label: "Siti Aminah" },
     { accountNumber: "5556667777", label: "Ahmad Fauzi" },
 ];
 
-// Supaya komponen lain tetap jalan, turunkan ke bentuk yang mereka pakai
 export const dummyTransactions = transaksilist.map((trx) => ({
     id: trx.id,
     date: trx.tanggal,
