@@ -1,5 +1,5 @@
 const names = [
-    "Budi Santoso", "Siti Aminah", "Ahmad Fauzi", "Rina Kartika", "Dewi Lestari", "Andi Pratama", "Putri Maharani", "Joko Widodo", "Rudi Hartono", "Nadia Safira",
+    "Budi Santoso", "Della Septi", "Ahmad Fauzi", "Rina Kartika", "Dewi Lestari", "Andi Pratama", "Putri Maharani", "Joko Widodo", "Rudi Hartono", "Nadia Safira",
     "Fajar Nugraha", "Tono Subagio", "Bayu Saputra", "Agus Salim", "Aisyah Rahma", "Dimas Arya", "Elisa Pertiwi", "Farhan Syah", "Gita Cahyani", "Hendra Wijaya",
     "Imam Prasetyo", "Jasmine Aulia", "Kayla Putri", "Lukman Hakim", "Maya Salsabila", "Naufal Ardi", "Oksana Dwi", "Putu Arya", "Qori Annisa", "Rama Mahendra",
     "Salsa Aprilia", "Tegar Saputra", "Umar Faruq", "Vina Melati", "Wahyu Adi", "Yusuf Maulana", "Zahra Ayu"
