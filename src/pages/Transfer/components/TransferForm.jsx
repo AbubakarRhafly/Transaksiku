@@ -18,6 +18,8 @@ export default function TransferForm({
     isSubmitting,
     currentUser,
     balance,
+    templates = [],
+    onSelectTemplate,
 }) {
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -74,13 +76,29 @@ export default function TransferForm({
                 />
             </div>
 
-            <Input
-                label="Pesan (opsional)"
-                textarea
-                placeholder="Contoh: Uang saku, bayar tagihan, dll."
-                value={formData.message}
-                onChange={(e) => onChange("message", e.target.value)}
-            />
+            <div className="grid gap-3 md:grid-cols-2">
+                <label className="flex flex-col gap-1 text-sm text-slate-800">
+                    Gunakan Template
+                    <select
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 shadow-inner focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200"
+                        onChange={(e) => onSelectTemplate?.(e.target.value)}
+                    >
+                        <option value="">Pilih template transfer</option>
+                        {templates.map((t) => (
+                            <option key={t.id} value={t.id}>
+                                {t.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <Input
+                    label="Pesan (opsional)"
+                    textarea
+                    placeholder="Contoh: Uang saku, bayar tagihan, dll."
+                    value={formData.message}
+                    onChange={(e) => onChange("message", e.target.value)}
+                />
+            </div>
 
             <div className="mt-2 flex justify-end">
                 <Button type="submit" disabled={isSubmitting}>

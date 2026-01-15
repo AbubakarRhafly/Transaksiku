@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-    Routes,
-    Route,
-    Navigate,
-    useLocation,
-    useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "../pages/Auth/Login.jsx";
 import TransferPage from "../pages/Transfer/TransferPage.jsx";
 import AdminLayout from "../layouts/AdminLayout.jsx";
 import { confirmLogout } from "../utils/helpers/SwalHelpers.jsx";
+import Dashboard from "../pages/Admin/Dashboard.jsx";
+import Settings from "../pages/Admin/Settings.jsx";
+import RekeningPage from "../pages/Rekening/RekeningPage.jsx";
+import LaporanPage from "../pages/Laporan/LaporanPage.jsx";
 
 export default function Router() {
     const [user, setUser] = useState(() => {
@@ -22,7 +20,6 @@ export default function Router() {
     });
 
     const navigate = useNavigate();
-    const location = useLocation();
     const isAuthed = !!user;
 
     useEffect(() => {
@@ -49,13 +46,14 @@ export default function Router() {
         });
     };
 
-    const adminRoute = isAuthed ? (
-        <AdminLayout user={user} onLogout={handleLogout}>
-            <TransferPage currentUser={user} />
-        </AdminLayout>
-    ) : (
-        <Navigate to="/" replace />
-    );
+    const makeAdminElement = (child) =>
+        isAuthed ? (
+            <AdminLayout user={user} onLogout={handleLogout}>
+                {child}
+            </AdminLayout>
+        ) : (
+            <Navigate to="/" replace />
+        );
 
     return (
         <Routes>
@@ -63,16 +61,20 @@ export default function Router() {
                 path="/"
                 element={
                     isAuthed ? (
-                        <Navigate to="/admin/transfer" replace />
+                        <Navigate to="/admin/dashboard" replace />
                     ) : (
                         <Login onLoginSuccess={handleLoginSuccess} />
                     )
                 }
             />
-            <Route path="/admin/transfer" element={adminRoute} />
+            <Route path="/admin/dashboard" element={makeAdminElement(<Dashboard />)} />
+            <Route path="/admin/transfer" element={makeAdminElement(<TransferPage currentUser={user} />)} />
+            <Route path="/admin/rekening" element={makeAdminElement(<RekeningPage />)} />
+            <Route path="/admin/laporan" element={makeAdminElement(<LaporanPage />)} />
+            <Route path="/admin/settings" element={makeAdminElement(<Settings />)} />
             <Route
                 path="*"
-                element={<Navigate to={isAuthed ? "/admin/transfer" : "/"} replace />}
+                element={<Navigate to={isAuthed ? "/admin/dashboard" : "/"} replace />}
             />
         </Routes>
     );

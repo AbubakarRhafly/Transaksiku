@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import Card from "../../components/Card.jsx";
 import Heading from "../../components/Heading.jsx";
-import {
-    dummyAccounts,
-    dummyTransactions,
-} from "../../utils/data/Dummy.js";
+import { dummyTransactions } from "../../utils/data/Dummy.js";
 import { showError, showSuccess } from "../../utils/helpers/ToastHelpers.jsx";
 import TransferForm from "./components/TransferForm.jsx";
 import TransactionList from "./components/TransactionList.jsx";
+import { useSavedAccountsQuery, useTransferTemplatesQuery } from "../../utils/services/queryHooks.js";
+import Swal from "sweetalert2";
 
 export default function TransferPage({ currentUser }) {
     const [formData, setFormData] = useState({
@@ -21,6 +20,8 @@ export default function TransferPage({ currentUser }) {
     const [balance, setBalance] = useState(
         currentUser?.saldo ?? currentUser?.balance ?? 0
     );
+    const { data: savedAccounts } = useSavedAccountsQuery();
+    const { data: templates } = useTransferTemplatesQuery();
 
     useEffect(() => {
         setBalance(currentUser?.saldo ?? currentUser?.balance ?? 0);
@@ -54,25 +55,47 @@ export default function TransferPage({ currentUser }) {
             return;
         }
 
-        setIsSubmitting(true);
-        setTimeout(() => {
-            const newTx = {
-                id: Date.now(),
-                date: new Date().toLocaleString("id-ID", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                }),
-                accountNumber: formData.accountNumber,
-                amount: amountNumber,
-                message: formData.message?.trim() || "",
-            };
-
-            setBalance((prev) => prev - amountNumber);
-            setTransactions((prev) => [newTx, ...prev]);
-            setFormData({ accountNumber: "", amount: "", message: "" });
-            setIsSubmitting(false);
-            showSuccess("Transfer berhasil.");
-        }, 2000);
+        const acc = (savedAccounts || []).find(a => a.accountNumber === formData.accountNumber);
+        Swal.fire({
+            title: "Konfirmasi Transfer",
+            html: `<div style="text-align:left">
+            <p><b>Tujuan:</b> ${acc ? `${acc.name} • ${acc.bank}` : formData.accountNumber}</p>
+            <p><b>Nominal:</b> ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(amountNumber)}</p>
+            <p><b>Pesan:</b> ${formData.message || "-"}</p>
+            </div>`,
+            showCancelButton: true,
+            confirmButtonText: "Kirim",
+        }).then((res) => {
+            if (!res.isConfirmed) return;
+            setIsSubmitting(true);
+            setTimeout(() => {
+                const newTx = {
+                    id: Date.now(),
+                    date: new Date().toLocaleString("id-ID", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                    }),
+                    accountNumber: formData.accountNumber,
+                    amount: amountNumber,
+                    message: formData.message?.trim() || "",
+                };
+                setBalance((prev) => prev - amountNumber);
+                setTransactions((prev) => [newTx, ...prev]);
+                setFormData({ accountNumber: "", amount: "", message: "" });
+                setIsSubmitting(false);
+                Swal.fire({
+                    title: "Receipt Transfer",
+                    html: `<div style="text-align:left">
+                    <p>ID: ${newTx.id}</p>
+                    <p>Waktu: ${newTx.date}</p>
+                    <p>Ke: ${acc ? `${acc.name} • ${acc.accountNumber}` : newTx.accountNumber}</p>
+                    <p>Nominal: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(newTx.amount)}</p>
+                    <p>Pesan: ${newTx.message || "-"}</p>
+                    </div>`,
+                });
+                showSuccess("Transfer berhasil.");
+            }, 2000);
+        });
     };
 
     const handleClearAll = () => {
@@ -88,13 +111,24 @@ export default function TransferPage({ currentUser }) {
                     subtitle="Lakukan transfer ke rekening tujuan (minimal Rp 1.000)."
                 />
                 <TransferForm
-                    accounts={dummyAccounts}
+                    accounts={(savedAccounts || []).map(a => ({ accountNumber: a.accountNumber, label: `${a.name} • ${a.bank}` }))}
                     formData={formData}
                     onChange={handleFormChange}
                     onSubmit={handleSubmitTransfer}
                     isSubmitting={isSubmitting}
                     currentUser={currentUser}
                     balance={balance}
+                    templates={templates || []}
+                    onSelectTemplate={(tplId) => {
+                        const tpl = (templates || []).find(t => t.id === tplId);
+                        if (tpl) {
+                            setFormData({
+                                accountNumber: tpl.accountNumber,
+                                amount: String(tpl.amount),
+                                message: tpl.message,
+                            });
+                        }
+                    }}
                 />
 
                 {isSubmitting && (

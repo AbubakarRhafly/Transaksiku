@@ -1,5 +1,6 @@
 import Heading from "../components/Heading.jsx";
 import Button from "../components/Button.jsx";
+import { NavLink } from "react-router-dom";
 
 export default function AdminLayout({ user, onLogout, children }) {
     return (
@@ -30,12 +31,31 @@ export default function AdminLayout({ user, onLogout, children }) {
                 <section className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">
                     <div className="flex flex-col gap-1">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
-                            Dashboard
+                            Admin
                         </p>
                         <Heading
-                            title="Transfer Antar Rekening"
-                            subtitle="Kelola dan pantau transaksi transfer Anda secara real-time."
+                            title="Transaksiku Admin"
+                            subtitle="Kelola data dan analitik."
                         />
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {[
+                                { to: "/admin/dashboard", label: "Dashboard" },
+                                { to: "/admin/transfer", label: "Transfer" },
+                                { to: "/admin/rekening", label: "Rekening" },
+                                { to: "/admin/laporan", label: "Laporan" },
+                                { to: "/admin/settings", label: "Settings" },
+                            ].map((link) => (
+                                <NavLink
+                                    key={link.to}
+                                    to={link.to}
+                                    className={({ isActive }) =>
+                                        `rounded-full px-4 py-1.5 text-xs font-semibold ${isActive ? "bg-blue-600 text-white" : "bg-white text-slate-700 border border-slate-200"}`
+                                    }
+                                >
+                                    {link.label}
+                                </NavLink>
+                            ))}
+                        </div>
                     </div>
                     {children}
                 </section>
